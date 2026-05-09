@@ -7,7 +7,7 @@ import pygame
 from graham_scan import Point, graham as original_graham, right as original_right
 
 N = 50
-FPS = 10
+FPS = 20
 WIDTH, HEIGHT = 1200, 900
 MARGIN = 70
 SEED = 7
@@ -197,7 +197,7 @@ def draw_step(screen, points, step, index, count, font, big_font):
     screen.blit(msg, (25, 82))
 
     legend = [
-        "2 FPS autoplay",
+        f"{FPS} FPS",
         "blue polyline = current stack S",
         "gray polyline = completed lower hull",
         "green polygon = final hull",
