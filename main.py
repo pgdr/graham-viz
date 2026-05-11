@@ -8,10 +8,10 @@ from graham_scan import Point, graham as original_graham, right as original_righ
 
 N = 50
 FPS = 20
-WIDTH, HEIGHT = 1200, 900
+WIDTH, HEIGHT = 1600, 1200
 MARGIN = 70
-SEED = 7
-
+SEED = 42
+RIGHT_COUNTER = 0
 
 class Step:
     def __init__(
@@ -95,6 +95,8 @@ def build_steps(points):
 
     def injected_right(a, b, c, S, phase):
         result = original_right(a, b, c)
+        global RIGHT_COUNTER
+        RIGHT_COUNTER = RIGHT_COUNTER+1
         steps.append(
             Step(
                 kind="right",
@@ -121,6 +123,9 @@ def build_steps(points):
                 final_hull=hull[:],
             )
         )
+        counter = RIGHT_COUNTER/(3*N)   # We distribute cost over a,b,c
+        print(f'right angle check per point: {round(counter, 2)}')
+
 
     hull = graham_injected(
         points,
@@ -257,6 +262,16 @@ def main_loop(screen, points, steps, font, big_font, clock, seed):
 def run():
     pygame.init()
     pygame.display.set_caption("Graham scan")
+    if len(sys.argv) >= 2:
+        global N
+        N = int(sys.argv[1])
+    if len(sys.argv) >= 3:
+        global FPS
+        FPS = int(sys.argv[2])
+
+    global SEED
+    SEED = random.randint(1, N*FPS)
+    print(f'{SEED=} <= {N*FPS}')
 
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     font = pygame.font.SysFont(None, 22)
